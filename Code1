@@ -1,0 +1,75 @@
+y=imread('leena.jpg');
+info=imfinfo('leena.jpg');
+M=info.BitDepth;
+G=2^M;
+[m n] =size(y);
+figure
+imshow(y)
+title('Original image');
+%%%%%%% 1.Image Negative %%%%%%%%%%
+for i=1:m
+for j=1:n
+z(i,j)=(G-1)-y(i,j);
+end
+end
+figure
+imshow(z)
+title('Image negative')
+%%%%%%%%%%%% 2.Thresholding %%%%%%%%%%%
+aa=input('Enter the threshold value for Basic Thresholding Point processing:');
+for i=1:m
+for j=1:n
+if y(i,j)<=aa
+zzz(i,j)=0;
+else zzz(i,j)=1;
+end
+end
+end
+figure
+imshow(zzz)
+title('Thresholded image')
+%input given is 127 from command window
+%%%%%%% 3.Image Brightning %%%%%%%%%
+mul = input("Enter value of brightness :");
+for i=1:m
+for j=1:n
+br(i,j)= y(i,j)+mul;
+end
+end
+figure
+imshow(br)
+title('Image Brightning')
+%input given is 215 from command window
+%%%%%%% 4.Image Darkening %%%%%%%%%
+mul = input("Enter value of darkness :");
+for i=1:m
+for j=1:n
+dr(i,j)= y(i,j)-mul;
+end
+end
+figure
+imshow(dr)
+title('Image Darkening')
+%input given is 115 from command window
+%%%%%%% 5.Contrast Enhancement %%%%%%%%%
+contrast_factor = input("Enter contrast enhancement factor: ");
+contrast_enhanced_image = y * contrast_factor;
+figure
+imshow(contrast_enhanced_image)
+title('Contrast Enhanced Image')
+%%%%%%% 6.Image Blurring %%%%%%%%%
+kernel_size = input('Enter the size of the Gaussian kernel (e.g., 3, 5, 7):');
+%Create the Gaussian kernel
+sigma = 1; % Standard deviation of the Gaussian distribution
+gaussian_kernel = fspecial('gaussian', [kernel_size, kernel_size], sigma);
+blurred_image = imfilter(y, gaussian_kernel);
+figure
+imshow(blurred_image)
+title('Blurred Image')
+%%%%%%% 7.Image Smoothing (Median Filter) %%%%%%%%%
+filter_size = input('Enter the size of the median filter (e.g., 3, 5, 7): ');
+%Apply median filter for smoothing
+smoothed_image = medfilt2(y, [filter_size, filter_size]);
+figure
+imshow(smoothed_image)
+title('Smoothed Image')

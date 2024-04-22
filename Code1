@@ -1,75 +1,131 @@
-y=imread('leena.jpg');
-info=imfinfo('leena.jpg');
-M=info.BitDepth;
-G=2^M;
-[m n] =size(y);
+% Read the image
+y = imread('leena.jpg');
+
+% Get image information
+info = imfinfo('leena.jpg');
+
+% Extract bit depth from image information
+M = info.BitDepth;
+
+The line info = imfinfo('leena.jpg'); retrieves information about the image file 'leena.jpg'
+using the MATLAB function imfinfo(). This function returns a structure array 
+containing details about the image file, including:
+
+Filename: The name of the file.
+FileModDate: The modification date of the file.
+FileSize: The size of the file in bytes.
+Format: The format of the image (e.g., JPEG, PNG, BMP).
+Width: The width of the image in pixels.
+Height: The height of the image in pixels.
+BitDepth: The number of bits per pixel used to represent pixel values.
+ColorType: The color type of the image (e.g., truecolor, grayscale).
+FormatVersion: The version of the image format.
+FormatSignature: A signature identifying the image format.
+
+% Calculate maximum intensity value
+G = 2^M;
+
+% Get image dimensions
+[m, n] = size(y);
+% m => height, n => width
+
+% Display original image
 figure
 imshow(y)
 title('Original image');
+
+figure: 
+Creates a new figure window for plotting.
+If a figure already exists, this command will
+create a new one, allowing multiple plots to be displayed simultaneously.
+
+imshow(y):
+Displays the image stored in the variable y within the currently
+active figure window. imshow is a MATLAB function used to display images.
+
+title('Original image'): Adds a title to the displayed image.
+In this case, the title is set to 'Original image'. 
+This helps in providing context to the displayed image.
+
 %%%%%%% 1.Image Negative %%%%%%%%%%
-for i=1:m
-for j=1:n
-z(i,j)=(G-1)-y(i,j);
+% Iterate through each pixel and calculate the negative
+for i = 1:m
+    for j = 1:n
+        z(i,j) = (G-1) - y(i,j);
+    end
 end
-end
+% Display negative image
 figure
 imshow(z)
 title('Image negative')
+
 %%%%%%%%%%%% 2.Thresholding %%%%%%%%%%%
-aa=input('Enter the threshold value for Basic Thresholding Point processing:');
-for i=1:m
-for j=1:n
-if y(i,j)<=aa
-zzz(i,j)=0;
-else zzz(i,j)=1;
+% Prompt user for threshold value
+aa = input('Enter the threshold value for Basic Thresholding Point processing:');
+% Apply thresholding
+for i = 1:m
+    for j = 1:n
+        if y(i,j) <= aa
+            zzz(i,j) = 0;
+        else
+            zzz(i,j) = 1;
+        end
+    end
 end
-end
-end
+% Display thresholded image
 figure
 imshow(zzz)
 title('Thresholded image')
-%input given is 127 from command window
-%%%%%%% 3.Image Brightning %%%%%%%%%
+
+%%%%%%% 3.Image Brightening %%%%%%%%%
+% Prompt user for brightness value
 mul = input("Enter value of brightness :");
-for i=1:m
-for j=1:n
-br(i,j)= y(i,j)+mul;
-end
-end
+% Brighten the image
+br = y + mul;
+% Display brightened image
 figure
 imshow(br)
-title('Image Brightning')
-%input given is 215 from command window
+title('Image Brightening')
+
 %%%%%%% 4.Image Darkening %%%%%%%%%
+% Prompt user for darkness value
 mul = input("Enter value of darkness :");
-for i=1:m
-for j=1:n
-dr(i,j)= y(i,j)-mul;
-end
-end
+% Darken the image
+dr = y - mul;
+% Display darkened image
 figure
 imshow(dr)
 title('Image Darkening')
-%input given is 115 from command window
+
 %%%%%%% 5.Contrast Enhancement %%%%%%%%%
+% Prompt user for contrast enhancement factor
 contrast_factor = input("Enter contrast enhancement factor: ");
+% Enhance contrast
 contrast_enhanced_image = y * contrast_factor;
+% Display contrast-enhanced image
 figure
 imshow(contrast_enhanced_image)
 title('Contrast Enhanced Image')
+
 %%%%%%% 6.Image Blurring %%%%%%%%%
+% Prompt user for size of Gaussian kernel
 kernel_size = input('Enter the size of the Gaussian kernel (e.g., 3, 5, 7):');
-%Create the Gaussian kernel
+% Create Gaussian kernel
 sigma = 1; % Standard deviation of the Gaussian distribution
 gaussian_kernel = fspecial('gaussian', [kernel_size, kernel_size], sigma);
+% Apply Gaussian blur
 blurred_image = imfilter(y, gaussian_kernel);
+% Display blurred image
 figure
 imshow(blurred_image)
 title('Blurred Image')
+
 %%%%%%% 7.Image Smoothing (Median Filter) %%%%%%%%%
+% Prompt user for size of median filter
 filter_size = input('Enter the size of the median filter (e.g., 3, 5, 7): ');
-%Apply median filter for smoothing
+% Apply median filter for smoothing
 smoothed_image = medfilt2(y, [filter_size, filter_size]);
+% Display smoothed image
 figure
 imshow(smoothed_image)
 title('Smoothed Image')
